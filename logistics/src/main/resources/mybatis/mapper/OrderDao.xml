@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.OrderDao">
+
+	<resultMap id="orderModel" type="com.model.OrderModel"
+		autoMapping="true">
+		<result column="ORDER_ID" property="orderId" />
+		<result column="SHIPPING_ORDER_NO" property="shippingOrderNo" />
+		<result column="CARGO_NAME" property="cargoName" />
+		<result column="SHIPPING_DATE" property="shippingDate" />
+		<result column="SENDER_NAME" property="senderName" />
+		<result column="FROM_LOCATION" property="fromLocation" />
+		<result column="TO_LOCATION" property="toLocation" />
+		<result column="ORDER_STATUS" property="orderStatus" />
+		<result column="ORDER_RECEPT_TIME" property="orderReceptTime" />
+		<result column="SENDER_PHONE" property="senderPhone" />
+		<result column="RECEIVER_PHONE" property="receiverPhone" />
+		<result column="RECEIVER_NAME" property="receiverName" />
+	</resultMap>
+
+	<resultMap id="shippingRecordModel"
+		type="com.model.ShippingRecordModel" autoMapping="true">
+		<result column="ORDER_ID" property="orderId" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_MSG" property="updateMsg" />
+		<result column="UPDATE_STATUS" property="updateStatus" />
+	</resultMap>
+
+	<select id="getOrderByOrderId" 
+		resultMap="orderModel">
+		SELECT ORDER_ID
+			,SHIPPING_ORDER_NO
+			,CARGO_NAME
+			,date_format(SHIPPING_DATE, '%Y-%m-%d %H:%i:%s') AS SHIPPING_DATE
+			,SENDER_NAME
+			,FROM_LOCATION
+			,TO_LOCATION
+			,ORDER_STATUS
+			,date_format(ORDER_RECEPT_TIME, '%Y-%m-%d %H:%i:%s') AS ORDER_RECEPT_TIME
+			,SENDER_PHONE
+			,RECEIVER_PHONE
+			,RECEIVER_NAME 
+		FROM ORDER_INFO WHERE ORDER_ID=#{orderId}
+	</select>
+	<select id="getOrderByUserId" resultMap="orderModel">
+		SELECT ORDER_ID
+			,SHIPPING_ORDER_NO
+			,CARGO_NAME
+			,date_format(SHIPPING_DATE, '%Y-%m-%d %H:%i:%s') AS SHIPPING_DATE
+			,SENDER_NAME
+			,FROM_LOCATION
+			,TO_LOCATION
+			,ORDER_STATUS
+			,date_format(ORDER_RECEPT_TIME, '%Y-%m-%d %H:%i:%s') AS ORDER_RECEPT_TIME
+			,SENDER_PHONE
+			,RECEIVER_PHONE
+			,RECEIVER_NAME 
+		FROM ORDER_INFO WHERE USER_ID=#{userId}
+		ORDER BY SHIPPING_DATE DESC
+	</select>
+	<select id="getRecordsById" resultMap="shippingRecordModel">
+		SELECT
+			ORDER_ID,
+			DATE_FORMAT(UPDATE_TIME,'%Y-%m-%d %H:%i:%s') AS UPDATE_TIME,
+			UPDATE_MSG,
+			UPDATE_STATUS
+		FROM SHIPPING_RECORDS
+		WHERE ORDER_ID = #{orderId}
+		ORDER BY UPDATE_TIME
+	</select>
+	<insert id="testInsert">
+		INSERT INTO test VALUES('1','2');
+	</insert>
+	<insert id="addOrder">
+		INSERT INTO ORDER_INFO (
+			ORDER_ID,
+			SHIPPING_ORDER_NO,
+			CARGO_NAME,
+			SHIPPING_DATE,
+			SENDER_NAME,
+			FROM_LOCATION,
+			TO_LOCATION,
+			ORDER_STATUS,
+			ORDER_RECEPT_TIME,
+			SENDER_PHONE,
+			RECEIVER_PHONE,
+			RECEIVER_NAME)
+		VALUES(
+			#{orderId},
+			#{shippingOrderNo},
+			#{cargoName},
+			str_to_date(#{shippingDate},'%Y-%m-%d %H:%i:%s'),
+			#{senderName},
+			#{fromLocation},
+			#{toLocation},
+			#{orderStatus},
+			str_to_date(#{orderReceptTime},'%Y-%m-%d %H:%i:%s'),
+			#{senderPhone},
+			#{receiverPhone},
+			#{receiverName})
+	</insert>
+	<insert id="addRecord">
+		INSERT INTO SHIPPING_RECORDS (
+			ORDER_ID,
+			UPDATE_TIME,
+			UPDATE_MSG,
+			UPDATE_STATUS)
+		VALUES(
+			#{orderId},
+			str_to_date(#{updateTime},'%Y-%m-%d %H:%i:%s'),
+			#{updateMsg},
+			#{updateStatus})
+	</insert>
+
+</mapper>

@@ -1,0 +1,356 @@
+a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, body, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, html, i, iframe, img, ins, kbd, label, legend, li, mark, menu, nav, object, ol, output, p, pre, q, ruby, s, samp, section, small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, tt, u, ul, var, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure, footer, header, menu, nav, section {
+    display: block;
+}
+
+input{
+    border: none;
+    background-color: rgba(255,255,255,0);
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+html{
+    font-family: PingFangSC-Light, NotoSansHans-Light, NotoSansHant-Light, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, STHeiti, \\534E\6587\7EC6\9ED1, SimHei, Helvetica, Arial, sans-serif
+
+}
+
+::-webkit-input-placeholder {
+
+    color: #D4D5D6;
+
+}
+:-moz-placeholder {/* Firefox 18- */
+
+    color: #D4D5D6;
+}
+
+::-moz-placeholder{/* Firefox 19+ */
+
+    color: #D4D5D6;
+
+}
+
+:-ms-input-placeholder {
+
+    color: #D4D5D6;
+
+}
+
+
+/**easyui 覆盖代码**/
+.combo-arrow, .combo-arrow:hover {
+    /*background-color: #fff;*/
+    background-color: rgba(255,255,255,0);
+    background-size: 65%;
+    /*padding: 0 5px;*/
+}
+
+.textbox{
+    background-color: rgba(255,255,255,0);
+    border: 1px solid #006EBC;
+    height: 27px;
+}
+
+.textbox .textbox-text{
+    background-color: rgba(255,255,255,0);
+    height: 24px;
+    font-size: 13px;
+    padding-left: 4px;
+}
+
+.ztable {
+    width: 100%;
+    float: left;
+    margin-top: 15px;
+    overflow: auto;
+}
+.btn-group{
+	width: 100%;
+}
+
+/**easyui 表格样式替换**/
+.pagination-first {
+    background: url('../img/pagination_icons.png') no-repeat 2px center;
+}
+
+.pagination-prev {
+    background: url('../img/pagination_icons.png') no-repeat -13px center;
+}
+
+.pagination-next {
+    background: url('../img/pagination_icons.png') no-repeat -26px center;
+}
+
+.pagination-last {
+    background: url('../img/pagination_icons.png') no-repeat -44px center;
+}
+
+.pagination-load {
+    background: url('../img/pagination_icons.png') no-repeat -60px center;
+}
+
+.pagination-loading {
+    /*background: url('../images/loading.gif') no-repeat center center;*/
+}
+
+.datagrid-wrap {
+    width: 100%;
+}
+
+.datagrid-header-inner {
+    float: left;
+    width: 100%;
+}
+
+.datagrid-header-inner table {
+    width: 100%;
+}
+
+.panel {
+    background: none;
+}
+
+.panel-body {
+    background: none;
+    border: 1px solid #abbbcf;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.datagrid-body table {
+    width: 100%;
+    height: 100%;
+}
+
+.datagrid-view {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-radius: 3px;
+}
+
+.datagrid-view2 {
+    left: 0;
+}
+
+.datagrid-body {
+    background: #fff;
+    overflow-x: auto;
+    /*padding-bottom: 15px;*/
+}
+
+.datagrid-header, .datagrid-body {
+    /*overflow-x: auto;*/
+    overflow-y: hidden;
+}
+
+.datagrid-header td {
+    background: #4990E2;
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.datagrid-header td.datagrid-header-over {
+    background: #4990E2;
+    color: #fff;
+}
+
+.datagrid-htable td div, .datagrid-btable td div {
+    margin: 0 auto;
+}
+
+.datagrid-row-over {
+    color: #4990E2;
+}
+
+
+.datagrid-header td, .datagrid-body td, .datagrid-footer td{
+    padding-top: 8px;
+}
+
+.datagrid-row:nth-child(odd) {
+    background: rgba(74, 144, 226, 0.04);
+}
+
+.datagrid-row:nth-child(even) {
+    background: #fff
+}
+
+.datagrid-row:last-child td {
+    border-bottom: none;
+}
+
+.datagrid-row-selected {
+    color: #4990E2;
+}
+
+.datagrid-header-row, .datagrid-row {
+    height: 34px;
+    height: 36px \9;
+    text-align: center;
+}
+
+.datagrid-row button {
+    border-radius: 5px;
+    border: solid 1px #bfd2ea;
+    color: #7099ce;
+    background: #F8FCFF;
+    font-size: 1em;
+    height: 20px;
+    line-height: 15px;
+    height: 22px \9;
+    line-height: 17px \9;
+}
+
+.datagrid-row button:hover {
+    border-color: #EEB38B;
+    color: #F38032;
+    background: #FFF9F5;
+}
+
+.datagrid-row button.off {
+    border: solid 1px #ccc;
+    color: #A3A3A3;
+    background: #F5F5F5;
+}
+
+.datagrid-row button.off:hover {
+    border: solid 1px #ccc;
+    color: #A3A3A3;
+    background: #F5F5F5;
+}
+
+.datagrid-row i {
+    color: #7099ce;
+    font-size: 1em;
+    height: 20px;
+    line-height: 15px;
+    height: 22px \9;
+    line-height: 17px \9;
+}
+
+.datagrid-row i:hover {
+    color: #F38032;
+    cursor: pointer;
+}
+
+.datagrid-htable, .datagrid-btable, .datagrid-ftable {
+    color: #888;
+}
+
+.datagrid-header td:last-child, .datagrid-body td:last-child {
+    border-right: none;
+}
+
+.datagrid-pager {
+    background: -moz-linear-gradient(top, #FAFAFA 0%, #E5E5E5 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #FAFAFA), color-stop(100%, #E5E5E5));
+    background: -webkit-linear-gradient(top, #FAFAFA 0%, #E5E5E5 100%);
+    background: -o-linear-gradient(top, #FAFAFA 0%, #E5E5E5 100%);
+    background: -ms-linear-gradient(top, #FAFAFA 0%, #E5E5E5 100%);
+    background: linear-gradient(to bottom, #FAFAFA 0%, #E5E5E5 100%);
+}
+
+.datagrid-pager { /*--IE8以下写法--*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#E5E5E5', GradientType=0);
+}
+
+/*--EasyUI--表格样式修改--end--*/
+
+/*--表格底部翻页--*/
+.pagination-btn-separator {
+    height: 18px;
+}
+
+.pagination {
+    color: #777;
+    font-weight: normal;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.datagrid .datagrid-pager {
+    border-color: #ddd;
+}
+
+.pagination .pagination-num {
+    height: 18px;
+    padding: 2px;
+    margin: 0 5px;
+    width: 3em;
+    border-radius: 4px;
+    text-align: center;
+    height: 20px \9;
+    padding: 1px \9;
+    border: solid 1px #ccc;
+}
+
+.pagination-page-list {
+    border: solid 1px #ccc;
+    height: 18px;
+    margin: 0 8px;
+    padding: 1px 0 0 4px;
+    width: auto;
+    border-radius: 4px;
+    width: 50px \9;
+    height: 20px \9;
+    border-radius: 0 \9;
+    padding: 0 0 0 4px \9;
+    /*border: none;*/
+    background: #fff;
+}
+
+.l-btn-disabled, .l-btn-disabled:hover {
+    opacity: 0.6;
+    opacity: 0.99 \9;
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter: gray;
+}
+
+.pagination-btn-separator {
+    display: none;
+}
+
+.combobox-item {
+    background-color: #fff;
+    border-bottom: rgba(0, 0, 0, 0.3) 1px solid;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.combobox-item:hover {
+    color: #4990e2;
+    cursor: pointer;
+}
+
+.combobox-item-selected {
+    background-color: #fff;
+    color: #4990e2;
+}
+
+.combobox-item .licheck {
+    float: right;
+}
+

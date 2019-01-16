@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/mvc
+       	http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       	http://www.springframework.org/schema/beans
+       	http://www.springframework.org/schema/beans/spring-beans.xsd 
+       	http://www.springframework.org/schema/context 
+       	http://www.springframework.org/schema/context/spring-context.xsd
+       	http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<mvc:annotation-driven/>
+	<context:component-scan base-package="com"/>
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
+
+	<!-- 静态资源解析 ui中包括 ：js、css、img、..， errorpage中为错误页 -->
+	<mvc:resources location="/errorpage/" mapping="/errorpage/**" />
+
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+ 	</bean>
+
+
+
+	 <!--<bean id="templateResolver" class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">-->
+		<!--<property name="prefix" value="/WEB-INF/html/" />-->
+		<!--<property name="suffix" value=".html" />-->
+		<!--<property name="templateMode" value="HTML5" />-->
+		<!--<property name="cacheable" value="false" />-->
+		<!--<property name="characterEncoding" value="UTF-8"/>-->
+	<!--</bean> &ndash;&gt;-->
+	<!--<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">-->
+		<!--<property name="templateResolver" ref="templateResolver" />-->
+	<!--</bean> &ndash;&gt;-->
+	 <!--<bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">-->
+		<!--<property name="templateEngine" ref="templateEngine" />-->
+		<!--<property name="characterEncoding" value="UTF-8"/>-->
+	<!--</bean> &ndash;&gt;-->
+
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+					<property name="supportedMediaTypes">
+						<list>
+							<value>text/html;charset=UTF-8</value>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+
+	<!--<bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>-->
+
+
+	<!-- 事务管理器 -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 事务注解 -->
+	<tx:annotation-driven transaction-manager="txManager"/>
+
+	<!-- XML事务AOP配置 -->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="save*" propagation="REQUIRED"/>
+			<tx:method name="put*" propagation="NOT_SUPPORTED"/>
+			<tx:method name="exe*" propagation="REQUIRED"/>
+			<tx:method name="update*" propagation="REQUIRED"/>
+			<tx:method name="synchronize*" propagation="REQUIRED"/>
+			<tx:method name="create*" propagation="REQUIRED"/>
+			<tx:method name="delete*" propagation="REQUIRED"/>
+			<tx:method name="add*" propagation="REQUIRED"/>
+			<tx:method name="select*" propagation="SUPPORTS" read-only="true"/>
+			<tx:method name="find*" propagation="SUPPORTS" read-only="true"/>
+			<tx:method name="get*" propagation="SUPPORTS" read-only="true"/>
+			<tx:method name="query*" propagation="SUPPORTS" read-only="true"/>
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- XML事务AOP配置 -->
+	<aop:config>
+		<aop:advisor advice-ref="txAdvice" pointcut="execution(* com.service..*.*(..))" />
+	</aop:config>
+
+	<!--&lt;!&ndash; 支持异步方法执行 &ndash;&gt;-->
+	<!--<task:executor id="myexecutor" pool-size="5"  />-->
+	<!--<task:annotation-driven executor="myexecutor"/>-->
+	<!-- 激活自动代理功能 -->
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+
+
+</beans>
