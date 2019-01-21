@@ -16,10 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.entity.AccessToken;
 import com.model.OrderModel;
 import com.model.ShippingRecordModel;
 import com.service.OrderService;
-import com.service.OrderServiceForWX;
 import com.service.impl.OrderServiceForWXImpl;
 import com.util.JsonUtil;
 import com.util.PraseRequestUtil;
@@ -252,6 +252,11 @@ public class OrderController {
 		} catch (IOException e) {
 			logger.info("写消息异常"+e);
 		}
+	}
+	
+	@RequestMapping(value = "/test/token")
+	public void testToken(HttpServletRequest request, HttpServletResponse response) {
+		AccessToken token = orderServiceForWXImpl.geToken();
 	}
 
 }
