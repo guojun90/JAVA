@@ -103,13 +103,61 @@
 		INSERT INTO SHIPPING_RECORDS (
 			ORDER_ID,
 			UPDATE_TIME,
-			UPDATE_MSG,
-			UPDATE_STATUS)
+			UPDATE_MSG)
 		VALUES(
 			#{orderId},
 			str_to_date(#{updateTime},'%Y-%m-%d %H:%i:%s'),
 			#{updateMsg},
 			#{updateStatus})
 	</insert>
+	<insert id="saveSubscribeUserInfo">
+		INSERT INTO SUBSCRIBE_USER_INFO
+			(SUBSCRIBE,
+			OPENID,
+			NICKNAME,
+			SEX,
+			LANGEUAGE,
+			CITY,
+			PROVINCE,
+			COUNTRY,
+			HEADIMGURL,
+			SUBSCRIBETIME,
+			UNIONID,
+			REMARK,
+			GROUPID,
+			TAGIDLIST,
+			SUBSCRIBESCENE,
+			QRSCENE,
+			QRSCENESTR)
+		VALUES(#{subscribe},
+			#{openId},
+			#{nickName},
+			#{sex},
+			#{langeuage},
+			#{city},
+			#{province},
+			#{country},
+			#{headImgUrl},
+			#{subscribeTime},
+			#{unionid},
+			#{remark},
+			#{groupId},
+			#{tagidList},
+			#{subscribeScene},
+			#{qrScene},
+			#{qrSceneStr})
+	</insert>
+	
+	<update id="updateSubscribeUserStatus">
+		UPDATE SUBSCRIBE_USER_INFO 
+		SET SUBSCRIBE = #{status}
+		WHERE OPENID = #{openId}
+	</update>
+	
+	<update id="updateSubscribeInfo">
+		UPDATE SUBSCRIBE_USER_INFO 
+		SET SUBSCRIBE = #{status} , SUBSCRIBETIME=#{subscribeTime}
+		WHERE OPENID = #{openId}
+	</update>
 
 </mapper>

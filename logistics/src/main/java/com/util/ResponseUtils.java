@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.entity.BaseMessage;
 import com.entity.TextMessage;
 import com.google.gson.stream.JsonWriter;
+import com.service.impl.OrderServiceForWXImpl;
 import com.thoughtworks.xstream.XStream;
 
 public class ResponseUtils {
@@ -58,13 +59,13 @@ public class ResponseUtils {
 		}
 	}
 
-	public static String getResponse(Map<String, String> requestMap, String responseMsg) {
+	public static String getResponse(Map<String, String> requestMap, OrderServiceForWXImpl orderServiceForWXImpl) {
 		BaseMessage msg = null;
 		String returnXmlStr = null;
 		String msgType = requestMap.get("MsgType");
 		switch (msgType) {
 		case "text":
-			msg = dealTextMsg(requestMap, responseMsg);
+			msg = dealTextMsg(requestMap, orderServiceForWXImpl);
 			break;
 		case "image":
 
@@ -84,6 +85,9 @@ public class ResponseUtils {
 		case "link":
 
 			break;
+		case "event":
+			msg = dealEventMsg(requestMap, orderServiceForWXImpl);
+			break;
 
 		default:
 			break;
@@ -102,9 +106,46 @@ public class ResponseUtils {
 	 * @param reqestMap
 	 * @return
 	 */
-	private static BaseMessage dealTextMsg(Map<String, String> reqestMap, String responseMsg) {
+	private static BaseMessage dealTextMsg(Map<String, String> reqestMap, OrderServiceForWXImpl orderServiceForWXImpl) {
 		String orderId = reqestMap.get("Content");
-		return new TextMessage(reqestMap, responseMsg);
+		String responseMsgContent = orderServiceForWXImpl.queryOrderRecords(orderId);
+		return new TextMessage(reqestMap, responseMsgContent);
+	}
+	
+	private static BaseMessage dealEventMsg(Map<String, String> requestMap, OrderServiceForWXImpl orderServiceForWXImpl) {
+		String event = requestMap.get("Event");
+		switch (event) {
+		case "CLICK":
+			return dealClickEvent(requestMap, orderServiceForWXImpl);
+		case "VIEW":
+			return dealViewEvent(requestMap);
+
+		case "subscribe":
+			orderServiceForWXImpl.saveSubscribeUserInfo(requestMap);
+			return new TextMessage(requestMap, "Hi,欢迎关注本测试公众号");
+		case "unsubscribe":
+			orderServiceForWXImpl.unSubscribe(requestMap);
+			return new TextMessage(requestMap, "");
+		default:
+			return new TextMessage(requestMap, "操作错误");
+		}
+	}
+
+	private static BaseMessage dealViewEvent(Map<String, String> requestMap) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private static BaseMessage dealClickEvent(Map<String, String> requestMap, OrderServiceForWXImpl orderServiceForWXImpl) {
+		String key = requestMap.get("EventKey");
+		switch (key) {
+		case "cargoSearch":
+			return new TextMessage(requestMap, "您好！直接回复订单编号即可查询物流信息");
+
+		default:
+			break;
+		}
+		return null;
 	}
 
 	private static String beanToXml(BaseMessage msg) {

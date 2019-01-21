@@ -2,6 +2,7 @@ package com.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.model.OrderModel;
 import com.model.ShippingRecordModel;
+import com.model.SubscribeUserInfoModel;
 import com.service.OrderServiceForWX;
 import com.util.HttpUtils;
 import com.util.JsonUtil;
@@ -34,6 +36,7 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 
 	private AccessToken token;
 	private final String GET_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+	private final String GET_SUBSCRIBE_USER_INFO_URL = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
 	private final String APPID = "wx3f621fe647638b65";
 	private final String APPSECRET = "a18b782008d0382f7b3007cf8673ecda";
 
@@ -71,15 +74,44 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 		return retVal.toString();
 	}
 
+	public void saveSubscribeUserInfo(Map<String, String> requestMap) {
+		String openId = requestMap.get("FromUserName");
+		String url = this.GET_SUBSCRIBE_USER_INFO_URL.replace("ACCESS_TOKEN", geToken().getToken()).replace("OPENID",openId);
+		String response = HttpUtils.httpGet(url, "");
+		logger.info(response);
+		
+		SubscribeUserInfoModel user = JsonUtil.convertJson2Object(response, SubscribeUserInfoModel.class);
+		try {
+			orderDao.saveSubscribeUserInfo(user);
+		} catch (Exception e) {
+			try {
+				orderDao.updateSubscribeInfo(openId,1,user.getSubscribeTime());
+			} catch (Exception e2) {
+				logger.info("保存关注用户失败"+e);
+			}
+		}
+	}
+	
+	
+	public void unSubscribe(Map<String, String> requestMap) {
+		try {
+			String openId = requestMap.get("FromUserName");
+			orderDao.updateSubscribeUserStatus(openId,0);
+		} catch (Exception e) {
+			logger.info("更新订阅用户状态为取消关注失败"+e);
+		}
+		
+	}
+
 	@Override
 	public AccessToken geToken() {
 		if (token == null || token.isExpired()) {
-			getToken();
+			getTokenInfo();
 		}
 		return token;
 	}
 
-	private void getToken() {
+	private void getTokenInfo() {
 		String url = GET_TOKEN_URL.replace("APPID", APPID).replace("APPSECRET", APPSECRET);
 		String response = HttpUtils.httpGet(url, "");
 		JsonObject jsonObject = new JsonParser().parse(response).getAsJsonObject();
@@ -88,9 +120,8 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 		token = new AccessToken(tokenStr, expireIn);
 		logger.info("get token success!");
 	}
-
-	public static void main(String[] args) {
-
+	
+	private static void setButton() {
 		AccessToken token = new OrderServiceForWXImpl().geToken();
 		String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=";
 		Button btn = new Button();
@@ -128,6 +159,30 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 
 		String response = HttpUtils.postJson(url + token.getToken(), json);
 		System.out.println(response);
+	}
+
+	public static void main(String[] args) {
+//		setButton();
+//		new OrderServiceForWXImpl().saveSubscribeUserInfo(requestMap);
+		String testStr = "subscribe\r\n" + 
+				"openId\r\n" + 
+				"nickName\r\n" + 
+				"sex\r\n" + 
+				"langeuage\r\n" + 
+				"city\r\n" + 
+				"province\r\n" + 
+				"country\r\n" + 
+				"headImgUrl\r\n" + 
+				"subscribeTime\r\n" + 
+				"unionid\r\n" + 
+				"remark\r\n" + 
+				"groupId\r\n" + 
+				"tagidList\r\n" + 
+				"subscribeScene\r\n" + 
+				"qrScene\r\n" + 
+				"qrSceneStr";
+		System.out.println(testStr.toUpperCase());
+		
 	}
 
 }

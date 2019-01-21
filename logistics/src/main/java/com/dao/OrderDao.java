@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.model.OrderModel;
 import com.model.ShippingRecordModel;
+import com.model.SubscribeUserInfoModel;
 
 public interface OrderDao {
 	OrderModel getOrderByOrderId(@Param("orderId")String orderId);
@@ -19,4 +20,10 @@ public interface OrderDao {
 	Integer addRecord(ShippingRecordModel model);
 	
 	Integer testInsert();
+	
+	Integer saveSubscribeUserInfo(SubscribeUserInfoModel user);
+
+	void updateSubscribeUserStatus(@Param("openId")String openId, @Param("status")int status);
+
+	void updateSubscribeInfo(@Param("openId")String openId, @Param("status")int status, @Param("subscribeTime")String subscribeTime);
 }

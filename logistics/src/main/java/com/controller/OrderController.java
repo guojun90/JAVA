@@ -242,8 +242,7 @@ public class OrderController {
 		Map<String, String> requestMap = PraseRequestUtil.praseReqest(request.getInputStream());
 		System.out.println(requestMap);
 		
-		String responseMsgContent = orderServiceForWXImpl.queryOrderRecords(requestMap.get("Content"));
-		String xmlStr = ResponseUtils.getResponse(requestMap, responseMsgContent);
+		String xmlStr = ResponseUtils.getResponse(requestMap, orderServiceForWXImpl);
 		logger.info("xmlStr:"+xmlStr);
 		try {
 			PrintWriter out = response.getWriter();
