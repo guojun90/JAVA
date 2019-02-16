@@ -130,19 +130,18 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 		// 第一个一级菜单及对应的二级菜单
 		SubButton sbtn = new SubButton("查询");
 		sbtn.getSub_button().add(new ClickButton("货物查询", "cargoSearch"));
-		sbtn.getSub_button().add(new ViewButton("回单查询", "http://www.baidu.com"));
-		sbtn.getSub_button().add(new ClickButton("回单上传", "uploadOrder"));
-		sbtn.getSub_button().add(new ClickButton("我要发货", "sendCargo"));
-		sbtn.getSub_button().add(new ClickButton("我的订单", "myOrder"));
+//		sbtn.getSub_button().add(new ViewButton("回单查询", "http://www.baidu.com"));
+//		sbtn.getSub_button().add(new ClickButton("回单上传", "uploadOrder"));
+//		sbtn.getSub_button().add(new ClickButton("我要发货", "sendCargo"));
+//		sbtn.getSub_button().add(new ClickButton("我的订单", "myOrder"));
 		btn.getButton().add(sbtn);
 
 		// 第二个一级菜单及对应的二级菜单
 		SubButton sbtn2 = new SubButton("业务范围");
-		sbtn2.getSub_button().add(new ClickButton("人工客服", "serverMan"));
-		sbtn2.getSub_button().add(new ViewButton("上海到长沙", "http://www.baidu.com"));
-		sbtn2.getSub_button().add(new ViewButton("上海到湖南", "http://www.baidu.com"));
-		sbtn2.getSub_button().add(new ViewButton("上海到池州", "http://www.baidu.com"));
-		sbtn2.getSub_button().add(new ViewButton("上海到北京", "http://www.baidu.com"));
+		sbtn2.getSub_button().add(new ClickButton("零担物流", "lessLogistics"));
+		sbtn2.getSub_button().add(new ClickButton("整车运输", "vehicleLogistics"));
+		sbtn2.getSub_button().add(new ClickButton("包裹服务", "parcelService"));
+		sbtn2.getSub_button().add(new ClickButton("仓储服务", "warehouseService"));
 		btn.getButton().add(sbtn2);
 
 		// 第二个一级菜单及对应的二级菜单
@@ -151,7 +150,7 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 		sbtn3.getSub_button().add(new ViewButton("企业文化", "http://www.baidu.com"));
 		sbtn3.getSub_button().add(new ViewButton("实力展示", "http://www.baidu.com"));
 		sbtn3.getSub_button().add(new ViewButton("部分客户", "http://www.baidu.com"));
-		sbtn3.getSub_button().add(new ViewButton("联系我们", "http://www.baidu.com"));
+		sbtn3.getSub_button().add(new ViewButton("联系我们", "http://www.xn--ehq1fn61j.xyz/logistics/order/jsp/login.jsp"));
 		btn.getButton().add(sbtn3);
 
 		String json = JsonUtil.convertObject2Json(btn);
@@ -162,26 +161,26 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 	}
 
 	public static void main(String[] args) {
-//		setButton();
+		setButton();
 //		new OrderServiceForWXImpl().saveSubscribeUserInfo(requestMap);
-		String testStr = "subscribe\r\n" + 
-				"openId\r\n" + 
-				"nickName\r\n" + 
-				"sex\r\n" + 
-				"langeuage\r\n" + 
-				"city\r\n" + 
-				"province\r\n" + 
-				"country\r\n" + 
-				"headImgUrl\r\n" + 
-				"subscribeTime\r\n" + 
-				"unionid\r\n" + 
-				"remark\r\n" + 
-				"groupId\r\n" + 
-				"tagidList\r\n" + 
-				"subscribeScene\r\n" + 
-				"qrScene\r\n" + 
-				"qrSceneStr";
-		System.out.println(testStr.toUpperCase());
+//		String testStr = "subscribe\r\n" + 
+//				"openId\r\n" + 
+//				"nickName\r\n" + 
+//				"sex\r\n" + 
+//				"langeuage\r\n" + 
+//				"city\r\n" + 
+//				"province\r\n" + 
+//				"country\r\n" + 
+//				"headImgUrl\r\n" + 
+//				"subscribeTime\r\n" + 
+//				"unionid\r\n" + 
+//				"remark\r\n" + 
+//				"groupId\r\n" + 
+//				"tagidList\r\n" + 
+//				"subscribeScene\r\n" + 
+//				"qrScene\r\n" + 
+//				"qrSceneStr";
+//		System.out.println(testStr.toUpperCase());
 		
 	}
 

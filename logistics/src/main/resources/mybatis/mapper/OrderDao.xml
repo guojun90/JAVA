@@ -103,7 +103,9 @@
 		INSERT INTO SHIPPING_RECORDS (
 			ORDER_ID,
 			UPDATE_TIME,
-			UPDATE_MSG)
+			UPDATE_MSG,
+			UPDATE_STATUS
+			)
 		VALUES(
 			#{orderId},
 			str_to_date(#{updateTime},'%Y-%m-%d %H:%i:%s'),
