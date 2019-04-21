@@ -257,5 +257,9 @@ public class OrderController {
 	public void testToken(HttpServletRequest request, HttpServletResponse response) {
 		AccessToken token = orderServiceForWXImpl.geToken();
 	}
-
+	
+	@RequestMapping(value = "/setButton")
+	public void setButton(HttpServletRequest request, HttpServletResponse response) {
+		orderServiceForWXImpl.setButton();
+	}
 }

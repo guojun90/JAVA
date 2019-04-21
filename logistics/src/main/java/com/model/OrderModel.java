@@ -180,8 +180,6 @@ public class OrderModel {
 				+ "发货人电话："+senderPhone+"\r\n"
 				+ "收货人："+receiverName+"\r\n"
 				+ "收货人电话："+receiverPhone+"\r\n"
-				+ "\r\n"
-				+ "****************************"
 				+ "货物运输跟踪记录：\r\n"
 				+ getRecordsStr(records);
 	}

@@ -1,6 +1,5 @@
 package com.service.impl;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +12,6 @@ import com.entity.Button;
 import com.entity.ClickButton;
 import com.entity.SubButton;
 import com.entity.ViewButton;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.model.OrderModel;
@@ -37,8 +35,11 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 	private AccessToken token;
 	private final String GET_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	private final String GET_SUBSCRIBE_USER_INFO_URL = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
-	private final String APPID = "wx3f621fe647638b65";
-	private final String APPSECRET = "a18b782008d0382f7b3007cf8673ecda";
+//	private final String APPID = "wx3f621fe647638b65";//测试号appid
+//	private final String APPSECRET = "a18b782008d0382f7b3007cf8673ecda";//测试号
+
+	private final String APPID = "wxbd2e45099d24cc5d";// 正是号APPID
+	private final String APPSECRET = "e010d92c6ee9bc76e9abf9bc3ef44664";//
 
 	@Override
 	public String queryOrderRecords(String orderId) {
@@ -76,31 +77,31 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 
 	public void saveSubscribeUserInfo(Map<String, String> requestMap) {
 		String openId = requestMap.get("FromUserName");
-		String url = this.GET_SUBSCRIBE_USER_INFO_URL.replace("ACCESS_TOKEN", geToken().getToken()).replace("OPENID",openId);
+		String url = this.GET_SUBSCRIBE_USER_INFO_URL.replace("ACCESS_TOKEN", geToken().getToken()).replace("OPENID",
+				openId);
 		String response = HttpUtils.httpGet(url, "");
 		logger.info(response);
-		
+
 		SubscribeUserInfoModel user = JsonUtil.convertJson2Object(response, SubscribeUserInfoModel.class);
 		try {
 			orderDao.saveSubscribeUserInfo(user);
 		} catch (Exception e) {
 			try {
-				orderDao.updateSubscribeInfo(openId,1,user.getSubscribeTime());
+				orderDao.updateSubscribeInfo(openId, 1, user.getSubscribeTime());
 			} catch (Exception e2) {
-				logger.info("保存关注用户失败"+e);
+				logger.info("保存关注用户失败" + e);
 			}
 		}
 	}
-	
-	
+
 	public void unSubscribe(Map<String, String> requestMap) {
 		try {
 			String openId = requestMap.get("FromUserName");
-			orderDao.updateSubscribeUserStatus(openId,0);
+			orderDao.updateSubscribeUserStatus(openId, 0);
 		} catch (Exception e) {
-			logger.info("更新订阅用户状态为取消关注失败"+e);
+			logger.info("更新订阅用户状态为取消关注失败" + e);
 		}
-		
+
 	}
 
 	@Override
@@ -120,8 +121,8 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 		token = new AccessToken(tokenStr, expireIn);
 		logger.info("get token success!");
 	}
-	
-	private static void setButton() {
+
+	public static void setButton() {
 		AccessToken token = new OrderServiceForWXImpl().geToken();
 		String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=";
 		Button btn = new Button();
@@ -129,7 +130,7 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 //		btn.getButton().add(new ViewButton("一级跳转", "http://www.baidu.com"));
 		// 第一个一级菜单及对应的二级菜单
 		SubButton sbtn = new SubButton("查询");
-		sbtn.getSub_button().add(new ClickButton("货物查询", "cargoSearch"));
+		sbtn.getSub_button().add(new ClickButton("单号查询", "cargoSearch"));
 //		sbtn.getSub_button().add(new ViewButton("回单查询", "http://www.baidu.com"));
 //		sbtn.getSub_button().add(new ClickButton("回单上传", "uploadOrder"));
 //		sbtn.getSub_button().add(new ClickButton("我要发货", "sendCargo"));
@@ -140,17 +141,20 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 		SubButton sbtn2 = new SubButton("业务范围");
 		sbtn2.getSub_button().add(new ClickButton("零担物流", "lessLogistics"));
 		sbtn2.getSub_button().add(new ClickButton("整车运输", "vehicleLogistics"));
-		sbtn2.getSub_button().add(new ClickButton("包裹服务", "parcelService"));
+		sbtn2.getSub_button().add(new ClickButton("包装服务", "parcelService"));
 		sbtn2.getSub_button().add(new ClickButton("仓储服务", "warehouseService"));
 		btn.getButton().add(sbtn2);
 
 		// 第二个一级菜单及对应的二级菜单
 		SubButton sbtn3 = new SubButton("关于我们");
-		sbtn3.getSub_button().add(new ViewButton("公司简介", "http://www.baidu.com"));
-		sbtn3.getSub_button().add(new ViewButton("企业文化", "http://www.baidu.com"));
-		sbtn3.getSub_button().add(new ViewButton("实力展示", "http://www.baidu.com"));
-		sbtn3.getSub_button().add(new ViewButton("部分客户", "http://www.baidu.com"));
-		sbtn3.getSub_button().add(new ViewButton("联系我们", "http://www.xn--ehq1fn61j.xyz/logistics/order/jsp/login.jsp"));
+		sbtn3.getSub_button()
+				.add(new ViewButton("公司简介", "http://www.yito56.cn/logistics/weChat/html/companyProfile.html"));
+		sbtn3.getSub_button()
+				.add(new ViewButton("企业文化", "http://www.yito56.cn/logistics/weChat/html/companyCulture.html"));
+		sbtn3.getSub_button()
+				.add(new ViewButton("实力展示", "http://www.yito56.cn/logistics/weChat/html/companyPower.html"));
+//		sbtn3.getSub_button().add(new ViewButton("部分客户", "http://www.aimi.fun/logistics/weChat/html/contact.html"));
+		sbtn3.getSub_button().add(new ViewButton("联系我们", "http://www.yito56.cn/logistics/weChat/html/contact.html"));
 		btn.getButton().add(sbtn3);
 
 		String json = JsonUtil.convertObject2Json(btn);
@@ -181,7 +185,7 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 //				"qrScene\r\n" + 
 //				"qrSceneStr";
 //		System.out.println(testStr.toUpperCase());
-		
+
 	}
 
 }
