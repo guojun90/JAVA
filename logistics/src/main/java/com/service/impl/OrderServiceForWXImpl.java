@@ -38,8 +38,14 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 //	private final String APPID = "wx3f621fe647638b65";//测试号appid
 //	private final String APPSECRET = "a18b782008d0382f7b3007cf8673ecda";//测试号
 
-	private final String APPID = "wxbd2e45099d24cc5d";// 正是号APPID
-	private final String APPSECRET = "e010d92c6ee9bc76e9abf9bc3ef44664";//
+//	private final String APPID = "wxbd2e45099d24cc5d";// 谊托APPID
+//	private final String APPSECRET = "e010d92c6ee9bc76e9abf9bc3ef44664";//谊托appSecret
+
+//	private final String APPID = "wxe4f8598001c88631";// 快硕
+//	private final String APPSECRET = "9edf600666dd734f345b36f14195cb41";// 快硕
+	
+	private final String APPID = "wx9388165393231417";// 磊硕
+	private final String APPSECRET = "1e79966c7f70f6f263f3d8dfb6598e61";// 磊硕
 
 	@Override
 	public String queryOrderRecords(String orderId) {
@@ -115,6 +121,7 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 	private void getTokenInfo() {
 		String url = GET_TOKEN_URL.replace("APPID", APPID).replace("APPSECRET", APPSECRET);
 		String response = HttpUtils.httpGet(url, "");
+		System.out.println("response=" + response);
 		JsonObject jsonObject = new JsonParser().parse(response).getAsJsonObject();
 		String tokenStr = JsonUtil.getJsonString(jsonObject, "access_token");
 		String expireIn = JsonUtil.getJsonString(jsonObject, "expires_in");
@@ -122,7 +129,7 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 		logger.info("get token success!");
 	}
 
-	public static void setButton() {
+	public static void setYITO56Button() {
 		AccessToken token = new OrderServiceForWXImpl().geToken();
 		String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=";
 		Button btn = new Button();
@@ -148,7 +155,7 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 		// 第二个一级菜单及对应的二级菜单
 		SubButton sbtn3 = new SubButton("关于我们");
 		sbtn3.getSub_button()
-				.add(new ViewButton("公司简介", "http://www.yito56.cn/logistics/weChat/html/companyProfile.html"));
+				.add(new ViewButton("公司简介", "http://rgpeab.natappfree.cc/logistics/ks/html/companyProfile.html"));
 		sbtn3.getSub_button()
 				.add(new ViewButton("企业文化", "http://www.yito56.cn/logistics/weChat/html/companyCulture.html"));
 		sbtn3.getSub_button()
@@ -164,8 +171,99 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 		System.out.println(response);
 	}
 
+	public static void setKSButton() {
+		AccessToken token = new OrderServiceForWXImpl().geToken();
+		String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=";
+		Button btn = new Button();
+//		btn.getButton().add(new ClickButton("一级按钮", "btn1"));
+//		btn.getButton().add(new ViewButton("一级跳转", "http://www.baidu.com"));
+		// 第一个一级菜单及对应的二级菜单
+		SubButton sbtn = new SubButton("查询");
+		sbtn.getSub_button().add(new ClickButton("单号查询", "cargoSearch"));
+//		sbtn.getSub_button().add(new ViewButton("回单查询", "http://www.baidu.com"));
+//		sbtn.getSub_button().add(new ClickButton("回单上传", "uploadOrder"));
+//		sbtn.getSub_button().add(new ClickButton("我要发货", "sendCargo"));
+//		sbtn.getSub_button().add(new ClickButton("我的订单", "myOrder"));
+		btn.getButton().add(sbtn);
+
+		// 第二个一级菜单及对应的二级菜单
+		SubButton sbtn2 = new SubButton("业务范围");
+		sbtn2.getSub_button().add(new ClickButton("零担物流", "lessLogistics"));
+		sbtn2.getSub_button().add(new ClickButton("整车运输", "vehicleLogistics"));
+		sbtn2.getSub_button().add(new ClickButton("包装服务", "parcelService"));
+		sbtn2.getSub_button().add(new ClickButton("仓储服务", "warehouseService"));
+		btn.getButton().add(sbtn2);
+
+		// 第二个一级菜单及对应的二级菜单
+		SubButton sbtn3 = new SubButton("关于我们");
+		sbtn3.getSub_button()
+				.add(new ViewButton("公司简介", "http://www.aimi.fun/logistics/ks/html/companyProfile.html"));
+		sbtn3.getSub_button()
+				.add(new ViewButton("企业文化", "http://www.aimi.fun/logistics/ks/html/companyCulture.html"));
+		sbtn3.getSub_button()
+				.add(new ViewButton("实力展示", "http://www.aimi.fun/logistics/ks/html/companyPower.html"));
+//		sbtn3.getSub_button().add(new ViewButton("部分客户", "http://www.aimi.fun/logistics/weChat/html/contact.html"));
+		sbtn3.getSub_button().add(new ViewButton("联系我们", "http://www.aimi.fun/logistics/ks/html/contact.html"));
+		btn.getButton().add(sbtn3);
+
+		String json = JsonUtil.convertObject2Json(btn);
+		System.out.println(json);
+
+		String response = HttpUtils.postJson(url + token.getToken(), json);
+		System.out.println(response);
+	}
+	
+	/**
+	 * 磊硕
+	 */
+	public static void setLSButton() {
+		AccessToken token = new OrderServiceForWXImpl().geToken();
+		String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=";
+		Button btn = new Button();
+//		btn.getButton().add(new ClickButton("一级按钮", "btn1"));
+//		btn.getButton().add(new ViewButton("一级跳转", "http://www.baidu.com"));
+		// 第一个一级菜单及对应的二级菜单
+		SubButton sbtn = new SubButton("查询");
+		sbtn.getSub_button().add(new ClickButton("单号查询", "cargoSearch"));
+//		sbtn.getSub_button().add(new ViewButton("回单查询", "http://www.baidu.com"));
+//		sbtn.getSub_button().add(new ClickButton("回单上传", "uploadOrder"));
+//		sbtn.getSub_button().add(new ClickButton("我要发货", "sendCargo"));
+//		sbtn.getSub_button().add(new ClickButton("我的订单", "myOrder"));
+		btn.getButton().add(sbtn);
+
+		// 第二个一级菜单及对应的二级菜单
+		SubButton sbtn2 = new SubButton("业务范围");
+		sbtn2.getSub_button().add(new ClickButton("零担物流", "lessLogistics"));
+		sbtn2.getSub_button().add(new ClickButton("整车运输", "vehicleLogistics"));
+		sbtn2.getSub_button().add(new ClickButton("包装服务", "parcelService"));
+		sbtn2.getSub_button().add(new ClickButton("仓储服务", "warehouseService"));
+		btn.getButton().add(sbtn2);
+
+		// 第二个一级菜单及对应的二级菜单
+		SubButton sbtn3 = new SubButton("关于我们");
+		sbtn3.getSub_button().add(new ViewButton("公司简介", "http://www.aimi.fun/logistics/ls/html/companyProfile.html"));
+		sbtn3.getSub_button().add(new ViewButton("企业文化", "http://www.aimi.fun/logistics/ls/html/companyCulture.html"));
+		sbtn3.getSub_button().add(new ViewButton("实力展示", "http://www.aimi.fun/logistics/ls/html/companyPower.html"));
+//		sbtn3.getSub_button().add(new ViewButton("部分客户", "http://www.aimi.fun/logistics/weChat/html/contact.html"));
+		sbtn3.getSub_button().add(new ViewButton("联系我们", "http://www.aimi.fun/logistics/ls/html/contact.html"));
+		btn.getButton().add(sbtn3);
+
+		String json = JsonUtil.convertObject2Json(btn);
+		System.out.println(json);
+
+		String response = HttpUtils.postJson(url + token.getToken(), json);
+		System.out.println(response);
+	}
+
+	@Override
+	public void setButton() {
+		setYITO56Button();
+	}
+
 	public static void main(String[] args) {
-		setButton();
+//		setKSButton();
+		setLSButton();
+		
 //		new OrderServiceForWXImpl().saveSubscribeUserInfo(requestMap);
 //		String testStr = "subscribe\r\n" + 
 //				"openId\r\n" + 

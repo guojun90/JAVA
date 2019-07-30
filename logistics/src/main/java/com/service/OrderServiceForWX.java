@@ -11,5 +11,7 @@ public interface OrderServiceForWX {
 	public String queryOrderRecords(String orderId);
 	
 	public AccessToken geToken();
+	
+	void setButton();
 
 }
