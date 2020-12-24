@@ -122,7 +122,7 @@ public class ResponseUtils {
 
 		case "subscribe":
 			orderServiceForWXImpl.saveSubscribeUserInfo(requestMap);
-			return new TextMessage(requestMap, "您好,欢迎关注磊硕物流！直接回复单号查询物流信息。");
+			return new TextMessage(requestMap, "您好,欢迎关注谊托物流！直接回复单号查询物流信息。");
 		case "unsubscribe":
 			orderServiceForWXImpl.unSubscribe(requestMap);
 			return new TextMessage(requestMap, "");

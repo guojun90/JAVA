@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.dao.OrderDao;
 import com.entity.AccessToken;
@@ -25,6 +26,7 @@ import com.util.JsonUtil;
  * @author 作者 Guo Jun
  * @version 创建时间：2019年1月16日 下午10:13:07 类说明
  */
+@Service
 public class OrderServiceForWXImpl implements OrderServiceForWX {
 
 	@Autowired
@@ -35,21 +37,20 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 	private AccessToken token;
 	private final String GET_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	private final String GET_SUBSCRIBE_USER_INFO_URL = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
-//	private final String APPID = "wx3f621fe647638b65";//测试号appid
-//	private final String APPSECRET = "a18b782008d0382f7b3007cf8673ecda";//测试号
+//	private final String APPID = "wx6ea1a7bb7a45b284";//测试号appid
+//	private final String APPSECRET = "1596e97893d63e37fd6ed948bd7528e2";//测试号
 
-//	private final String APPID = "wxbd2e45099d24cc5d";// 谊托APPID
-//	private final String APPSECRET = "e010d92c6ee9bc76e9abf9bc3ef44664";//谊托appSecret
+	private final String APPID = "wxbd2e45099d24cc5d";// 谊托APPID
+	private final String APPSECRET = "e010d92c6ee9bc76e9abf9bc3ef44664";// 谊托appSecret
 
 //	private final String APPID = "wxe4f8598001c88631";// 快硕
 //	private final String APPSECRET = "9edf600666dd734f345b36f14195cb41";// 快硕
-	
-	private final String APPID = "wx9388165393231417";// 磊硕
-	private final String APPSECRET = "1e79966c7f70f6f263f3d8dfb6598e61";// 磊硕
+
+//	private final String APPID = "wx9388165393231417";// 磊硕
+//	private final String APPSECRET = "1e79966c7f70f6f263f3d8dfb6598e61";// 磊硕
 
 	@Override
 	public String queryOrderRecords(String orderId) {
-		// TODO Auto-generated method stub
 		StringBuilder retVal = new StringBuilder();
 		OrderModel order = null;
 		List<ShippingRecordModel> records = null;
@@ -59,8 +60,9 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 			order = orderDao.getOrderByOrderId(orderId);
 			if (order != null) {
 				// 订单信息存入R
-				logger.debug("get order info success.order id:" + order.getOrderId());
+				logger.info("get order info success.order id:" + order.getOrderId());
 
+//				logger.info(logger.getName());
 				// 查询路由记录信息
 				records = orderDao.getRecordsById(orderId);
 				order.setRecords(records);
@@ -69,18 +71,23 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 				retVal.append(order.toString());
 
 			} else {
-				retVal.append("抱歉，无您所查订单信息，请回复正确的订单编号");
+				retVal.append("抱歉，无您所查订单信息，请确认订单编号");
 			}
 
 		} catch (Exception e) {
 			logger.info("数据库处理错误查询" + e);
-			retVal.append("抱歉，无您所查订单信息，请回复正确的订单编号");
+			retVal.append("抱歉，无您所查订单信息，请确认订单编号");
 		}
 
 		logger.info("response msg:" + retVal.toString());
 		return retVal.toString();
 	}
 
+	/**
+	 * 保存关注者信息
+	 * 
+	 * @param requestMap
+	 */
 	public void saveSubscribeUserInfo(Map<String, String> requestMap) {
 		String openId = requestMap.get("FromUserName");
 		String url = this.GET_SUBSCRIBE_USER_INFO_URL.replace("ACCESS_TOKEN", geToken().getToken()).replace("OPENID",
@@ -100,6 +107,11 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 		}
 	}
 
+	/**
+	 * 取消关注，更改状态
+	 * 
+	 * @param requestMap
+	 */
 	public void unSubscribe(Map<String, String> requestMap) {
 		try {
 			String openId = requestMap.get("FromUserName");
@@ -107,7 +119,6 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 		} catch (Exception e) {
 			logger.info("更新订阅用户状态为取消关注失败" + e);
 		}
-
 	}
 
 	@Override
@@ -120,8 +131,10 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 
 	private void getTokenInfo() {
 		String url = GET_TOKEN_URL.replace("APPID", APPID).replace("APPSECRET", APPSECRET);
+		System.out.println(url);
 		String response = HttpUtils.httpGet(url, "");
-		System.out.println("response=" + response);
+		System.out.println(response);
+		logger.info("response=" + response);
 		JsonObject jsonObject = new JsonParser().parse(response).getAsJsonObject();
 		String tokenStr = JsonUtil.getJsonString(jsonObject, "access_token");
 		String expireIn = JsonUtil.getJsonString(jsonObject, "expires_in");
@@ -155,20 +168,19 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 		// 第二个一级菜单及对应的二级菜单
 		SubButton sbtn3 = new SubButton("关于我们");
 		sbtn3.getSub_button()
-				.add(new ViewButton("公司简介", "http://rgpeab.natappfree.cc/logistics/ks/html/companyProfile.html"));
+				.add(new ViewButton("公司简介", "http://www.yito56.cn/logistics/weChat/html/companyProfile.html"));
 		sbtn3.getSub_button()
 				.add(new ViewButton("企业文化", "http://www.yito56.cn/logistics/weChat/html/companyCulture.html"));
 		sbtn3.getSub_button()
 				.add(new ViewButton("实力展示", "http://www.yito56.cn/logistics/weChat/html/companyPower.html"));
-//		sbtn3.getSub_button().add(new ViewButton("部分客户", "http://www.aimi.fun/logistics/weChat/html/contact.html"));
 		sbtn3.getSub_button().add(new ViewButton("联系我们", "http://www.yito56.cn/logistics/weChat/html/contact.html"));
 		btn.getButton().add(sbtn3);
 
 		String json = JsonUtil.convertObject2Json(btn);
-		System.out.println(json);
+		logger.info(json);
 
 		String response = HttpUtils.postJson(url + token.getToken(), json);
-		System.out.println(response);
+		logger.info(response);
 	}
 
 	public static void setKSButton() {
@@ -196,23 +208,20 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 
 		// 第二个一级菜单及对应的二级菜单
 		SubButton sbtn3 = new SubButton("关于我们");
-		sbtn3.getSub_button()
-				.add(new ViewButton("公司简介", "http://www.aimi.fun/logistics/ks/html/companyProfile.html"));
-		sbtn3.getSub_button()
-				.add(new ViewButton("企业文化", "http://www.aimi.fun/logistics/ks/html/companyCulture.html"));
-		sbtn3.getSub_button()
-				.add(new ViewButton("实力展示", "http://www.aimi.fun/logistics/ks/html/companyPower.html"));
+		sbtn3.getSub_button().add(new ViewButton("公司简介", "http://www.aimi.fun/logistics/ks/html/companyProfile.html"));
+		sbtn3.getSub_button().add(new ViewButton("企业文化", "http://www.aimi.fun/logistics/ks/html/companyCulture.html"));
+		sbtn3.getSub_button().add(new ViewButton("实力展示", "http://www.aimi.fun/logistics/ks/html/companyPower.html"));
 //		sbtn3.getSub_button().add(new ViewButton("部分客户", "http://www.aimi.fun/logistics/weChat/html/contact.html"));
 		sbtn3.getSub_button().add(new ViewButton("联系我们", "http://www.aimi.fun/logistics/ks/html/contact.html"));
 		btn.getButton().add(sbtn3);
 
 		String json = JsonUtil.convertObject2Json(btn);
-		System.out.println(json);
+		logger.info(json);
 
 		String response = HttpUtils.postJson(url + token.getToken(), json);
-		System.out.println(response);
+		logger.info(response);
 	}
-	
+
 	/**
 	 * 磊硕
 	 */
@@ -249,10 +258,10 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 		btn.getButton().add(sbtn3);
 
 		String json = JsonUtil.convertObject2Json(btn);
-		System.out.println(json);
+		logger.info(json);
 
 		String response = HttpUtils.postJson(url + token.getToken(), json);
-		System.out.println(response);
+		logger.info(response);
 	}
 
 	@Override
@@ -262,8 +271,9 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 
 	public static void main(String[] args) {
 //		setKSButton();
-		setLSButton();
-		
+//		setLSButton();
+		setYITO56Button();
+
 //		new OrderServiceForWXImpl().saveSubscribeUserInfo(requestMap);
 //		String testStr = "subscribe\r\n" + 
 //				"openId\r\n" + 
@@ -282,7 +292,7 @@ public class OrderServiceForWXImpl implements OrderServiceForWX {
 //				"subscribeScene\r\n" + 
 //				"qrScene\r\n" + 
 //				"qrSceneStr";
-//		System.out.println(testStr.toUpperCase());
+//		logger.info(testStr.toUpperCase());
 
 	}
 

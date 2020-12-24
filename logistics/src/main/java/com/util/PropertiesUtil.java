@@ -76,6 +76,6 @@ public final class PropertiesUtil {
 //		String path = "D:\\GitHub\\myProject\\logistics\\src\\main\\resources\\conf";
 //		PropertiesUtil.PROP_PATH = path;
 		String auth_url = PropertiesUtil.getValues("auth.url");
-		System.out.println(auth_url);
+		logger.info(auth_url);
 	}
 }

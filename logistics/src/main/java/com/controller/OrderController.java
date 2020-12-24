@@ -240,7 +240,7 @@ public class OrderController {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		Map<String, String> requestMap = PraseRequestUtil.praseReqest(request.getInputStream());
-		System.out.println(requestMap);
+		logger.info(requestMap);
 		
 		String xmlStr = ResponseUtils.getResponse(requestMap, orderServiceForWXImpl);
 		logger.info("xmlStr:"+xmlStr);

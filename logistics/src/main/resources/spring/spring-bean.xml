@@ -16,8 +16,8 @@
 		http://www.springframework.org/schema/task
 		http://www.springframework.org/schema/task/spring-task.xsd">
 
-	<bean id="userService" class="com.service.impl.UserServiceImpl"/>	
-	<bean id="orderServiceForWXImpl" class="com.service.impl.OrderServiceForWXImpl"/>
+	<!-- <bean id="userService" class="com.service.impl.UserServiceImpl"/>	
+	<bean id="orderServiceForWXImpl" class="com.service.impl.OrderServiceForWXImpl"/> -->
 <!-- 	<task:scheduled-tasks>
  		<task:scheduled ref="subscribeService" method="startSubscribeTask" cron="0/20 * * * * ? "/>
      	<task:scheduled ref="subscribeService" method="endSubscribeTask" cron="0/25 * * * * ? "/>

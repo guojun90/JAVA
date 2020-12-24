@@ -222,17 +222,17 @@ public class DateUtils {
 		Date startTime = DateUtils.parshDateTimeFormat("2018-09-13 12:50:00");
 		Date endTime = DateUtils.parshDateTimeFormat("2018-07-01 19:20:20");
 
-//		System.out.println(inDateRange(startDate, endDate, "yyyy-MM-dd"));
-		System.out.println(isReadyToStart(startDate, startTime, endDate, endTime, 5));
+//		logger.info(inDateRange(startDate, endDate, "yyyy-MM-dd"));
+		logger.info(isReadyToStart(startDate, startTime, endDate, endTime, 5));
 
 		/*
 		 * if (isReadyToStart(startDate, startTime, endDate, endTime, 5)) {
 		 * System.out.println("pass!"); } else { System.out.println("false"); }
 		 */
-//		System.out.println(DateUtils.compairWithDate(d));
-//		System.out.println(DateUtils.compairWithTime(d1));
+//		logger.info(DateUtils.compairWithDate(d));
+//		logger.info(DateUtils.compairWithTime(d1));
 //		
-//		System.out.println("现在的日期大："+nowBigger(d));
+//		logger.info("现在的日期大："+nowBigger(d));
 
 	}
 

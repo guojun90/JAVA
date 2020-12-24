@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService{
 			String dbPwd = userDao.getPwdByName(userName);
 			return pwd.equals(dbPwd)? true:false;
 		} catch (Exception e) {
-			logger.info("查询数据库出错");
+			logger.info("查询数据库出错", e);
 			return false;
 		}
 	}

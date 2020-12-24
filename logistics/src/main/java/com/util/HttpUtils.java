@@ -173,7 +173,7 @@ public class HttpUtils {
 
 		String re = HttpUtils.post("http://localhost:8080/bid-web/consumer/receive", params);
 
-		System.out.println(re);
+		logger.info(re);
 	}
 
 }
